@@ -3,14 +3,10 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserRepository {
-  private readonly users: User[];
-
-  constructor() {
-    this.users = [
-      new User('pfazzi', 'patrick@fazzi.test'),
-      new User('gboa', 'giorgio@boa.test'),
-    ];
-  }
+  private readonly users: User[] = [
+    new User('pfazzi', 'patrick@fazzi.test'),
+    new User('gboa', 'giorgio@boa.test'),
+  ];
 
   getAll(): User[] {
     return this.users;

@@ -1,12 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
-import { Clock } from './clock';
+import { Controller, Get, Inject } from '@nestjs/common';
+import { ClockInterface } from './clock.interface';
 
 @Controller('health-check')
 export class HealthCheckController {
-  constructor(private readonly clock: Clock) {}
+  constructor(@Inject('Clock') private readonly clock: ClockInterface) {}
 
   @Get()
-  timestamp(): string {
-    return this.clock.now().toISOString();
+  timestamp(): Date {
+    return this.clock.now();
   }
 }
