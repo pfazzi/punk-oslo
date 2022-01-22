@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthCheckController } from './health-check.controller';
-import { SystemClock } from './system-clock';
 import { FakeClock } from './fake-clock';
 
 describe('HealthCheckController', () => {

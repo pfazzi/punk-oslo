@@ -1,9 +1,9 @@
 import { Controller, Get, Inject } from '@nestjs/common';
-import { ClockInterface } from './clock.interface';
+import { Clock } from '../../shared/domain/clock';
 
 @Controller('health-check')
 export class HealthCheckController {
-  constructor(@Inject('Clock') private readonly clock: ClockInterface) {}
+  constructor(@Inject('Clock') private readonly clock: Clock) {}
 
   @Get()
   timestamp(): Date {

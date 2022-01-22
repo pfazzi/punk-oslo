@@ -1,18 +1,7 @@
 import { Module } from '@nestjs/common';
-import { UserController } from './user.controller';
-import { HealthCheckController } from './health-check.controller';
-import { SystemClock } from './system-clock';
-import { UserRepository } from './user.repository';
+import { RestModule } from './ui/rest/rest.module';
 
 @Module({
-  imports: [],
-  controllers: [UserController, HealthCheckController],
-  providers: [
-    {
-      provide: 'Clock',
-      useClass: SystemClock,
-    },
-    UserRepository,
-  ],
+  imports: [RestModule],
 })
 export class AppModule {}
