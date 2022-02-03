@@ -2,11 +2,11 @@ import { Controller, Get, Inject, Param } from '@nestjs/common';
 import { User } from '../../user/domain/user';
 import { UserRepository } from '../../user/infrastructure/user.repository';
 
-@Controller('users')
+@Controller('users_old')
 export class UserController {
   constructor(
     @Inject('UserRepository') private readonly repository: UserRepository,
-  ) {}
+  ) { }
 
   @Get()
   list(): User[] {
