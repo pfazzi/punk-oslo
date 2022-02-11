@@ -1,13 +1,55 @@
-import { User } from '../domain/user';
+import { User as WriteModel } from '../domain/user';
+import { User as ReadModel } from './user.read-model';
+import { UserRepository as UserRepositoryInterface } from '../domain/user.repository';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UserDocument } from './user.schema';
 
-export class UserRepository implements UserRepository {
-  private readonly users: User[] = [];
+export class UserRepository implements UserRepositoryInterface {
+  constructor(
+    @InjectModel(ReadModel.name)
+    private readonly userModel: Model<UserDocument>,
+  ) {}
 
-  getAll(): User[] {
-    return this.users;
+  async getAll(): Promise<ReadModel[]> {
+    return this.userModel
+      .find() // TODO: non esporre i disabilitati
+      .exec()
+      .then((collecion) => collecion.map(UserRepository.documentToReadModel));
   }
 
-  oneByEmail(email: string): User {
-    return this.users.find((user: User) => user.email === email);
+  async one(id: string): Promise<ReadModel> {
+    return this.userModel
+      .findOne({ _id: id }) // TODO: non esporre i disabilitati
+      .exec()
+      .then(UserRepository.documentToReadModel);
+  }
+
+  store(user: WriteModel): void {
+    const state = user.toState();
+
+    const id = user.id();
+
+    const exists = this.userModel.exists({ _id: user.id() });
+    if (exists) {
+      this.userModel.findByIdAndUpdate(id, state);
+    } else {
+      this.userModel.create(state);
+    }
+  }
+
+  async get(id: string): Promise<WriteModel> {
+    return await this.userModel
+      .findOne({ _id: id })
+      .exec()
+      .then(UserRepository.documentToWriteModel);
+  }
+
+  private static documentToReadModel(document: UserDocument): ReadModel {
+    return new ReadModel(document.id, document.email, document.privacy);
+  }
+
+  private static documentToWriteModel(document: UserDocument): WriteModel {
+    return WriteModel.fromState({ id: document._id, ...document });
   }
 }

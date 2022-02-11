@@ -12,7 +12,10 @@ export class User {
   password: string;
 
   @Prop()
-  privacy: string;
+  privacy: boolean;
+
+  @Prop()
+  active: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
