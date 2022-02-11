@@ -1,0 +1,120 @@
+{
+    "info": {
+        "_postman_id": "7cb0bc7b-c0d3-95ef-38bf-84a6258fd78c",
+        "name": "punk-oslo",
+        "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "admin",
+            "item": [
+                {
+                    "name": "Get all users",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "token",
+                                "value": "asdadsaasd"
+                            }
+                        ],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": []
+                        },
+                        "url": "localhost:3000/admin-users"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get user",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": []
+                        },
+                        "url": "localhost:3000/users/0"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create user",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "token",
+                                "value": "adasdad"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"a@b.it\",\n  \"password\": \"ccc\",\n  \"privacy\": true\n}\n"
+                        },
+                        "url": "localhost:3000/users"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update user",
+                    "request": {
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "token",
+                                "value": "asdsad"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"333a@b.it\",\n  \"password\": \"ccc\",\n  \"privacy\": true\n}\n"
+                        },
+                        "url": "localhost:3000/admin-users/61faf3a95853fc286781f0bc"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete user",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "body": {
+                            "mode": "formdata",
+                            "formdata": []
+                        },
+                        "url": "localhost:3000/users/61faee116f1ca5b13f3e2c7b"
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Create user",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"email\": \"a@b.it\",\n  \"password\": \"ccc\",\n  \"privacy\": true\n}\n"
+                },
+                "url": "localhost:3000/users"
+            },
+            "response": []
+        }
+    ]
+}
