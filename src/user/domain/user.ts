@@ -2,7 +2,6 @@ import { DomainEvent } from '../../shared/domain/domain-event';
 import { UserHasSignedUp } from './user-has-signed-up.event';
 import { UserHasBeenDeleted } from './user-has-been-deleted.event';
 import { EventRecorder } from '../../shared/domain/event-recorder';
-import { Pippo } from '../../shared/domain/pippo';
 
 export class User extends EventRecorder {
   private _id: string;
@@ -42,7 +41,19 @@ export class User extends EventRecorder {
     );
   }
 
-  static fromState({ id, email, password, privacy, active }): User {
+  static fromState({
+    id,
+    email,
+    password,
+    privacy,
+    active,
+  }: {
+    id: string;
+    email: string;
+    password: string;
+    privacy: boolean;
+    active: boolean;
+  }): User {
     const newUser = new User();
 
     newUser._id = id;

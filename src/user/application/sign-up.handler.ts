@@ -7,6 +7,7 @@ import { DomainEventDispatcher } from '../../shared/domain/domain-event-dispatch
 export class SignUpHandler {
   constructor(
     @Inject('UserRepository') private readonly repository: UserRepository,
+    @Inject('DomainEventDispatcher')
     private readonly eventDispatcher: DomainEventDispatcher,
   ) {}
 

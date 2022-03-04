@@ -28,9 +28,9 @@ export class UserRepository implements UserRepositoryInterface {
   store(user: WriteModel): void {
     const state = user.toState();
 
-    const id = user.id();
+    const id = state.id;
 
-    const exists = this.userModel.exists({ _id: user.id() });
+    const exists = this.userModel.exists({ id });
     if (exists) {
       this.userModel.findByIdAndUpdate(id, state);
     } else {
@@ -40,9 +40,9 @@ export class UserRepository implements UserRepositoryInterface {
 
   async get(id: string): Promise<WriteModel> {
     return await this.userModel
-      .findOne({ _id: id })
+      .findOne({ id })
       .exec()
-      .then(UserRepository.documentToWriteModel);
+      .then((d) => (d ? UserRepository.documentToWriteModel(d) : null));
   }
 
   private static documentToReadModel(document: UserDocument): ReadModel {
@@ -50,6 +50,6 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   private static documentToWriteModel(document: UserDocument): WriteModel {
-    return WriteModel.fromState({ id: document._id, ...document });
+    return WriteModel.fromState(document);
   }
 }
