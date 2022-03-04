@@ -4,6 +4,7 @@ import { UserRepository as UserRepositoryInterface } from '../domain/user.reposi
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDocument } from './user.schema';
+import { RuntimeException } from '@nestjs/core/errors/exceptions/runtime.exception';
 
 export class UserRepository implements UserRepositoryInterface {
   constructor(
@@ -19,22 +20,29 @@ export class UserRepository implements UserRepositoryInterface {
   }
 
   async one(id: string): Promise<ReadModel> {
+    throw new Error('User not found');
     return this.userModel
-      .findOne({ _id: id }) // TODO: non esporre i disabilitati
+      .findOne({ id }) // TODO: non esporre i disabilitati
       .exec()
-      .then(UserRepository.documentToReadModel);
+      .then((d) =>
+        d
+          ? UserRepository.documentToReadModel(d)
+          : (() => {
+              throw new Error('User not found');
+            })(),
+      );
   }
 
-  store(user: WriteModel): void {
+  async store(user: WriteModel): Promise<any> {
     const state = user.toState();
 
     const id = state.id;
 
-    const exists = this.userModel.exists({ id });
+    const exists = await this.userModel.exists({ id });
     if (exists) {
-      this.userModel.findByIdAndUpdate(id, state);
+      await this.userModel.updateOne({ id }, state);
     } else {
-      this.userModel.create(state);
+      await this.userModel.create(state);
     }
   }
 
@@ -42,7 +50,17 @@ export class UserRepository implements UserRepositoryInterface {
     return await this.userModel
       .findOne({ id })
       .exec()
-      .then((d) => (d ? UserRepository.documentToWriteModel(d) : null));
+      .then((d) =>
+        d
+          ? UserRepository.documentToWriteModel(d)
+          : (() => {
+              throw new Error('User not found');
+            })(),
+      );
+  }
+
+  async deleteAll(): Promise<any> {
+    await this.userModel.remove({});
   }
 
   private static documentToReadModel(document: UserDocument): ReadModel {
