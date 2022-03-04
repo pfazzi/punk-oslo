@@ -1,3 +1,3 @@
-export class Delete {
+export class UserHasBeenDeleted {
   constructor(public readonly id: string) {}
 }

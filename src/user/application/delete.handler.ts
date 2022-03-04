@@ -3,10 +3,12 @@ import { User } from '../domain/user';
 import { SignUp } from './sign-up';
 import { HttpException, HttpStatus, Inject } from '@nestjs/common';
 import { Delete } from './delete';
+import { DomainEventDispatcher } from '../../shared/domain/domain-event-dispatcher';
 
 export class DeleteHandler {
   constructor(
     @Inject('UserRepository') private readonly repository: UserRepository,
+    private readonly eventDispatcher: DomainEventDispatcher,
   ) {}
 
   async handle(command: Delete): Promise<any> {
@@ -15,5 +17,7 @@ export class DeleteHandler {
     user.delete();
 
     this.repository.store(user);
+
+    this.eventDispatcher.dispatch(...user.releaseEvents());
   }
 }

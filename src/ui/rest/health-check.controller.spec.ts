@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { HealthCheckController } from './health-check.controller';
-import { FakeClock } from './fake-clock';
+import { FakeClock } from '../../shared/infrastructure/fake-clock';
 
 describe('HealthCheckController', () => {
   let healthCheckController: HealthCheckController;
